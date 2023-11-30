@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: user-service
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: jdbc:mariadb://localhost:3306/JPA_N+1_ISSUE
+    username: root
+    password: taeyun1215
+  jpa:
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+    show-sql: true
+
+jwt:
+  granted: Bearer
+  header: Authorization
+  secret: asdasd312321312321321e3lk12l3qs;djq2lk4jqwlkejklqw@@ewqke21;l#
+  expiration:
+    access: 3600000 # 3600 * 1000
+    refresh: 86400000 # 3600 * 24 * 1000
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
