@@ -8,9 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 @SpringBootTest
 public class PostRepositoryTest {
 
@@ -22,11 +24,11 @@ public class PostRepositoryTest {
 
     @BeforeEach
     public void setup() {
-        // 사용자와 게시글을 각각 10개씩 생성하고 저장합니다.
-        for (int i = 1; i <= 10; i++) {
-            UserJpaEntity user = new UserJpaEntity(null, "user" + i + "@example.com", "password", "nickname" + i, "User " + i);
-            userRepository.save(user);
+        UserJpaEntity user = new UserJpaEntity(null, "user" + "@example.com", "password", "nickname" , "User" );
+        userRepository.save(user);
 
+        // 사용자 1명이 게시글을 10개 생성하고 저장합니다.
+        for (int i = 1; i <= 10; i++) {
             PostJpaEntity post = new PostJpaEntity(null, "Title " + i, "Content " + i, user);
             postJpaRepo.save(post);
         }
@@ -38,7 +40,7 @@ public class PostRepositoryTest {
         List<PostJpaEntity> posts = postJpaRepo.findAll();
         for (PostJpaEntity post : posts) {
             UserJpaEntity user = post.getUser();
-            System.out.println("Post Title: " + post.getTitle() + ", User Name: " + user.getName());
+            System.out.println("Post Title: " + post.getId() + ", User Name: " + user.getId());
         }
     }
 }
