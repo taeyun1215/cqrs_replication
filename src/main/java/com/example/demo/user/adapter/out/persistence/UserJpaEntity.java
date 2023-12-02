@@ -1,14 +1,11 @@
 package com.example.demo.user.adapter.out.persistence;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.example.demo.post.PostJpaEntity;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -24,4 +21,12 @@ public class UserJpaEntity {
     private String password;
     private String nickname;
     private String name;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "userJpaEntity", cascade = CascadeType.ALL)
+    private List<PostJpaEntity> postJpaEntities = new ArrayList<>();
+
+    public void addPost(PostJpaEntity postJpaEntity) {
+        postJpaEntities.add(postJpaEntity);
+    }
 }

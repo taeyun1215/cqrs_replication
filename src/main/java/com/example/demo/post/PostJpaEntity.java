@@ -2,6 +2,7 @@ package com.example.demo.post;
 
 import com.example.demo.user.adapter.out.persistence.UserJpaEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
 @Table(name = "posts")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,5 +26,9 @@ public class PostJpaEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserJpaEntity user;
+    private UserJpaEntity userJpaEntity;
+
+    public void addUser(UserJpaEntity userJpaEntity) {
+        this.userJpaEntity = userJpaEntity;
+    }
 }
