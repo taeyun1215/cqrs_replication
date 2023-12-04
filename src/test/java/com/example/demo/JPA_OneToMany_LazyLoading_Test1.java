@@ -37,16 +37,25 @@ public class JPA_OneToMany_LazyLoading_Test1 {
                     .build();
 
             // PostJpaEntity 객체 생성
-            PostJpaEntity postJpaEntity = PostJpaEntity.builder()
+            PostJpaEntity postJpaEntity1 = PostJpaEntity.builder()
                     .title("Title " + i)
                     .content("Content " + i)
                     .build();
 
+            // PostJpaEntity 객체 생성
+            PostJpaEntity postJpaEntity2 = PostJpaEntity.builder()
+                    .title("Title " + i)
+                    .content("Content " + i)
+                    .build();
+
+
             // UserJpaEntity에 PostJpaEntity를 추가
-            userJpaEntity.addPost(postJpaEntity);
+            userJpaEntity.addPost(postJpaEntity1);
+            userJpaEntity.addPost(postJpaEntity2);
 
             // PostJpaEntity에 UserJpaEntity를 추가
-            postJpaEntity.addUser(userJpaEntity);
+            postJpaEntity1.addUser(userJpaEntity);
+            postJpaEntity2.addUser(userJpaEntity);
 
             // UserJpaEntity를 저장 (CascadeType.ALL에 의해 PostJpaEntity도 저장됩니다)
             userJpaRepo.save(userJpaEntity);
@@ -63,14 +72,9 @@ public class JPA_OneToMany_LazyLoading_Test1 {
                 .collect(Collectors.toList());
 
         // N+1 문제가 발생합니다. 1(userJpaRepo.findAll()) + 1()번의 쿼리가 실행됩니다.
-        for (UserJpaEntity userJpaEntity : userJpaEntities) {
-            // UserJpaEntity에 연관된 PostJpaEntity 객체들에 접근
-            List<PostJpaEntity> postJpaEntities = userJpaEntity.getPostJpaEntities();
-
-            for (PostJpaEntity postJpaEntity : postJpaEntities) {
-                // 여기서 각 PostJpaEntity에 접근할 때마다 별도의 쿼리가 실행됩니다.
-                System.out.println("User Id: " + userJpaEntity.getId() + " Post Id: " + postJpaEntity.getId());
-            }
-        }
+//        for (UserJpaEntity userJpaEntity : userJpaEntities) {
+//            // 여기서 각 PostJpaEntity에 접근할 때마다 별도의 쿼리가 실행됩니다.
+//            System.out.println(userJpaEntity.getPostJpaEntities().size());
+//        }
     }
 }
