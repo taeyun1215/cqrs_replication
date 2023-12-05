@@ -1,6 +1,6 @@
 package com.example.demo.post;
 
-import com.example.demo.user.adapter.out.persistence.UserJpaEntity;
+import com.example.demo.user.UserJpaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
