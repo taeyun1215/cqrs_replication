@@ -2,8 +2,8 @@ package com.example.demo;
 
 import com.example.demo.post.PostJpaEntity;
 import com.example.demo.post.PostJpaRepo;
-import com.example.demo.user.adapter.out.persistence.SpringDataUserRepository;
-import com.example.demo.user.adapter.out.persistence.UserJpaEntity;
+import com.example.demo.user.UserJpaEntity;
+import com.example.demo.user.UserJpaRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,19 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Transactional
 @SpringBootTest
-@DisplayName("1:N 관계에서 N에서 Lazy Loading 을 사용할 때 발생하는 N+1 문제를 확인합니다.")
-public class JPA_OneToMany_LazyLoading_Test1 {
+@DisplayName("1:N 관계에서 N에서 LAZY Loading 을 사용할 때 발생하는 N+1 문제를 확인합니다.")
+public class JPA_OneToMany_Lazy_Loading_Test1 {
+
+    @Autowired
+    private UserJpaRepo userJpaRepo;
 
     @Autowired
     private PostJpaRepo postJpaRepo;
 
     @Autowired
-    private SpringDataUserRepository userJpaRepo;
+    EntityManager em;
 
     @BeforeEach
     public void setup() {
@@ -42,12 +45,10 @@ public class JPA_OneToMany_LazyLoading_Test1 {
                     .content("Content " + i)
                     .build();
 
-            // PostJpaEntity 객체 생성
             PostJpaEntity postJpaEntity2 = PostJpaEntity.builder()
                     .title("Title " + i)
                     .content("Content " + i)
                     .build();
-
 
             // UserJpaEntity에 PostJpaEntity를 추가
             userJpaEntity.addPost(postJpaEntity1);
@@ -63,18 +64,21 @@ public class JPA_OneToMany_LazyLoading_Test1 {
     }
 
     @Test
-    public void testNPlusOneProblem() {
+    public void JPA_OneToMany_Lazy_Loading_Test1() {
+        em.flush();
+        em.clear();
+        System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
+
+        System.out.println("------------ USER 전체 조회 요청 ------------");
         List<UserJpaEntity> userJpaEntities = userJpaRepo.findAll();
+        System.out.println("------------ USER 전체 조회 완료. [1번의 쿼리 발생]------------\n");
 
-        // N+1 문제가 발생합니다. 1(userJpaRepo.findAll()) + 10(userJpaEntities.stream())번의 쿼리가 실행됩니다.
-        userJpaEntities.stream()
-                .map(userJpaEntity -> userJpaEntity.getPostJpaEntities().get(0).getId())
-                .collect(Collectors.toList());
+        System.out.println("------------ USER ID 조회 요청 ------------");
+        userJpaEntities.forEach(userJpaEntity -> System.out.println("USER ID: " + userJpaEntity.getId()));
+        System.out.println("------------ USER ID 조회 완료. [추가적인 쿼리 발생하지 않음]------------\n");
 
-        // N+1 문제가 발생합니다. 1(userJpaRepo.findAll()) + 1()번의 쿼리가 실행됩니다.
-//        for (UserJpaEntity userJpaEntity : userJpaEntities) {
-//            // 여기서 각 PostJpaEntity에 접근할 때마다 별도의 쿼리가 실행됩니다.
-//            System.out.println(userJpaEntity.getPostJpaEntities().size());
-//        }
+        System.out.println("------------ USER와 연관관계인 POST 내용 조회 요청 ------------");
+        userJpaEntities.forEach(userJpaEntity -> System.out.println("USER IN POST ID: " + userJpaEntity.getPostJpaEntities().get(0).getId()));
+        System.out.println("------------ USER와 연관관계인 POST 내용 조회 완료  [조회된 USER 개수(N=10) 만큼 추가적인 쿼리 발생] ------------\n");
     }
 }
