@@ -1,9 +1,9 @@
 package com.example.demo;
 
-import com.example.demo.comment.CommentJpaEntity;
-import com.example.demo.comment.CommentJpaRepo;
-import com.example.demo.user.UserJpaEntity;
-import com.example.demo.user.UserJpaRepo;
+import com.example.demo.book.BookJpaEntity;
+import com.example.demo.book.BookJpaRepo;
+import com.example.demo.review.ReviewJpaEntity;
+import com.example.demo.review.ReviewJpaRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,10 +20,10 @@ import java.util.List;
 public class JPA_OneToMany_Eager_Loading_Test1 {
 
     @Autowired
-    private UserJpaRepo userJpaRepo;
+    private BookJpaRepo bookJpaRepo;
 
     @Autowired
-    private CommentJpaRepo commentJpaRepo;
+    private ReviewJpaRepo reviewJpaRepo;
 
     @Autowired
     EntityManager em;
@@ -31,52 +31,63 @@ public class JPA_OneToMany_Eager_Loading_Test1 {
     @BeforeEach
     public void setup() {
         for (int i = 1; i <= 10; i++) {
-            // UserJpaEntity 객체 생성
-            UserJpaEntity userJpaEntity = UserJpaEntity.builder()
-                    .email("user" + "@example.com")
-                    .password("password")
-                    .nickname("nickname")
-                    .name("User ")
+            // BookJpaEntity 객체 생성
+            BookJpaEntity bookJpaEntity = BookJpaEntity.builder()
+                    .title("title" + i)
+                    .author("author" + i)
                     .build();
 
-            // CommentJpaEntity 객체 생성
-            CommentJpaEntity commentJpaEntity1 = CommentJpaEntity.builder()
-                    .text("text " + i)
+            // ReviewJpaEntity 객체 생성
+            ReviewJpaEntity reviewJpaEntity1 = ReviewJpaEntity.builder()
+                    .content("content " + i)
                     .build();
 
-            CommentJpaEntity commentJpaEntity2 = CommentJpaEntity.builder()
-                    .text("text " + i)
+            ReviewJpaEntity reviewJpaEntity2 = ReviewJpaEntity.builder()
+                    .content("content " + i)
                     .build();
 
-            // UserJpaEntity에 CommentJpaEntity를 추가
-            userJpaEntity.addComment(commentJpaEntity1);
-            userJpaEntity.addComment(commentJpaEntity2);
+            // BookJpaEntity에 ReviewJpaEntity를 추가
+            bookJpaEntity.addReview(reviewJpaEntity1);
+            bookJpaEntity.addReview(reviewJpaEntity2);
 
-            // CommentJpaEntity에 UserJpaEntity를 추가
-            commentJpaEntity1.addUser(userJpaEntity);
-            commentJpaEntity2.addUser(userJpaEntity);
+            // ReviewJpaEntity에 BookJpaEntity를 추가
+            reviewJpaEntity1.addBook(bookJpaEntity);
+            reviewJpaEntity2.addBook(bookJpaEntity);
 
-            // UserJpaEntity를 저장 (CascadeType.ALL에 의해 CommentJpaEntity더 저장됩니다)
-            userJpaRepo.save(userJpaEntity);
+            // BookJpaEntity를 저장 (CascadeType.ALL에 의해 ReviewJpaEntity도 저장됩니다)
+            bookJpaRepo.save(bookJpaEntity);
         }
     }
 
     @Test
+    @DisplayName("EAGER Loading을 사용할 때 발생하는 N+1 문제를 확인합니다.")
     public void JPA_OneToMany_Eager_Loading_Test1() {
         em.flush();
         em.clear();
         System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
 
-        System.out.println("------------ USER 전체 조회 요청 ------------");
-        List<UserJpaEntity> userJpaEntities = userJpaRepo.findAll();
-        System.out.println("------------ USER 전체 조회 완료. [조회된 USER의 개수(N=10) 만큼 추가적인 쿼리 발생]------------\n\n");
+        System.out.println("------------ BOOK 전체 조회 요청 ------------");
+        List<BookJpaEntity> bookJpaEntities = bookJpaRepo.findAll();
+        System.out.println("------------ BOOK 전체 조회 완료. [조회된 BOOK의 개수(N=10) 만큼 추가적인 쿼리 발생]------------\n");
 
-        System.out.println("------------ USER ID 조회 요청 ------------");
-        userJpaEntities.forEach(userJpaEntity -> System.out.println("USER ID: " + userJpaEntity.getId()));
-        System.out.println("------------ USER ID 조회 완료. [추가적인 쿼리 발생하지 않음]------------\n\n");
+        System.out.println("------------ BOOK와 연관관계인 REVIEW 내용 조회 요청------------");
+        bookJpaEntities.forEach(bookJpaEntity -> System.out.println("BOOK IN REVIEW ID: " + bookJpaEntity.getReviewJpaEntities().get(0).getId()));
+        System.out.println("------------ BOOK와 연관관계인 REVIEW 내용 조회 완료 [추가적인 쿼리 발생하지 않음] ------------\n");
+    }
 
-        System.out.println("------------ USER와 연관관계인 Comment 내용 조회 요청------------");
-        userJpaEntities.forEach(userJpaEntity -> System.out.println("USER IN Comment ID: " + userJpaEntity.getCommentJpaEntities().get(0).getId()));
-        System.out.println("------------ USER와 연관관계인 Comment 내용 조회 완료 [추가적인 쿼리 발생하지 않음] ------------\n\n");
+    @Test
+    @DisplayName("Fetch Join을 사용하여 N+1 문제를 해결합니다.")
+    public void JPA_OneToMany_Eager_Loading_Test2() {
+        em.flush();
+        em.clear();
+        System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
+
+        System.out.println("------------ BOOK 전체 조회 요청 ------------");
+        List<BookJpaEntity> bookJpaEntities = bookJpaRepo.findAllByFetchJoin();
+        System.out.println("------------ BOOK 전체 조회 완료. [Fetch Join을 사용하여 1번의 쿼리만 발생함]------------\n");
+
+        System.out.println("------------ BOOK와 연관관계인 REVIEW 내용 조회 요청------------");
+        bookJpaEntities.forEach(bookJpaEntity -> System.out.println("BOOK IN REVIEW ID: " + bookJpaEntity.getReviewJpaEntities().get(0).getId()));
+        System.out.println("------------ BOOK와 연관관계인 REVIEW 내용 조회 완료 [추가적인 쿼리 발생하지 않음] ------------\n");
     }
 }

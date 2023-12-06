@@ -64,6 +64,7 @@ public class JPA_OneToMany_Lazy_Loading_Test1 {
     }
 
     @Test
+    @DisplayName("Lazy Loading을 사용할 때 발생하는 N+1 문제를 확인합니다.")
     public void JPA_OneToMany_Lazy_Loading_Test1() {
         em.flush();
         em.clear();
@@ -73,12 +74,68 @@ public class JPA_OneToMany_Lazy_Loading_Test1 {
         List<UserJpaEntity> userJpaEntities = userJpaRepo.findAll();
         System.out.println("------------ USER 전체 조회 완료. [1번의 쿼리 발생]------------\n");
 
-        System.out.println("------------ USER ID 조회 요청 ------------");
-        userJpaEntities.forEach(userJpaEntity -> System.out.println("USER ID: " + userJpaEntity.getId()));
-        System.out.println("------------ USER ID 조회 완료. [추가적인 쿼리 발생하지 않음]------------\n");
-
         System.out.println("------------ USER와 연관관계인 POST 내용 조회 요청 ------------");
         userJpaEntities.forEach(userJpaEntity -> System.out.println("USER IN POST ID: " + userJpaEntity.getPostJpaEntities().get(0).getId()));
         System.out.println("------------ USER와 연관관계인 POST 내용 조회 완료  [조회된 USER 개수(N=10) 만큼 추가적인 쿼리 발생] ------------\n");
+    }
+
+    @Test
+    @DisplayName("Fetch Join을 사용하여 N+1 문제를 해결합니다.")
+    public void JPA_OneToMany_Lazy_Loading_Test2() {
+        em.flush();
+        em.clear();
+        System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
+
+        System.out.println("------------ USER 전체 조회 요청 ------------");
+        List<UserJpaEntity> userJpaEntities = userJpaRepo.findAllByFetchJoin();
+        System.out.println("------------ USER 전체 조회 완료. [1번의 쿼리 발생]------------\n");
+
+        System.out.println("------------ USER와 연관관계인 POST 내용 조회 요청 ------------");
+        userJpaEntities.forEach(userJpaEntity -> System.out.println("USER IN POST ID: " + userJpaEntity.getPostJpaEntities().get(0).getId()));
+        System.out.println("------------ USER와 연관관계인 POST 내용 조회 완료  [Fetch Join을 사용하여 추가적인 쿼리 발생하지 않음] ------------\n");
+
+        System.out.println("------------ USER SIZE 확인 ------------");
+        System.out.println("userJpaEntities.size() : " + userJpaEntities.size());
+        System.out.println("------------ USER SIZE 확인 완료 [20개가 조회!?, Fetch Join(Inner Join)은 카테시안 곱이 발생하여 POST의 수만큼 USER가 중복이 발생]------------\n");
+    }
+
+    @Test
+    @DisplayName("Fetch Join을 사용하여 N+1 문제를 해결합니다. (Distinct)")
+    public void JPA_OneToMany_Lazy_Loading_Test3() {
+        em.flush();
+        em.clear();
+        System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
+
+        System.out.println("------------ USER 전체 조회 요청 ------------");
+        List<UserJpaEntity> userJpaEntities = userJpaRepo.findAllByFetchJoinDistinct();
+        System.out.println("------------ USER 전체 조회 완료. [1번의 쿼리 발생]------------\n");
+
+        System.out.println("------------ USER와 연관관계인 POST 내용 조회 요청 ------------");
+        userJpaEntities.forEach(userJpaEntity -> System.out.println("USER IN POST ID: " + userJpaEntity.getPostJpaEntities().get(0).getId()));
+        System.out.println("------------ USER와 연관관계인 POST 내용 조회 완료  [Fetch Join을 사용하여 추가적인 쿼리 발생하지 않음] ------------\n");
+
+        System.out.println("------------ USER SIZE 확인 ------------");
+        System.out.println("userJpaEntities.size() : " + userJpaEntities.size());
+        System.out.println("------------ USER SIZE 확인 완료 [10개가 조회 된다]------------\n");
+    }
+
+    @Test
+    @DisplayName("EntityGraph를 사용하여 N+1 문제를 해결합니다.")
+    public void JPA_OneToMany_Lazy_Loading_Test4() {
+        em.flush();
+        em.clear();
+        System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
+
+        System.out.println("------------ USER 전체 조회 요청 ------------");
+        List<UserJpaEntity> userJpaEntities = userJpaRepo.findAllByEntityGraph();
+        System.out.println("------------ USER 전체 조회 완료. [1번의 쿼리 발생]------------\n");
+
+        System.out.println("------------ USER와 연관관계인 POST 내용 조회 요청 ------------");
+        userJpaEntities.forEach(userJpaEntity -> System.out.println("USER IN POST ID: " + userJpaEntity.getPostJpaEntities().get(0).getId()));
+        System.out.println("------------ USER와 연관관계인 POST 내용 조회 완료  [Fetch Join을 사용하여 추가적인 쿼리 발생하지 않음] ------------\n");
+
+        System.out.println("------------ USER SIZE 확인 ------------");
+        System.out.println("userJpaEntities.size() : " + userJpaEntities.size());
+        System.out.println("------------ USER SIZE 확인 완료 [20개가 조회!?, EntityGraph(Outer Join)도 카테시안 곱이 발생하여 POST의 수만큼 USER가 중복이 발생]------------\n");
     }
 }
