@@ -1,6 +1,5 @@
 package com.example.demo.user;
 
-import com.example.demo.comment.CommentJpaEntity;
 import com.example.demo.post.PostJpaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,15 +29,7 @@ public class UserJpaEntity {
     @OneToMany(mappedBy = "userJpaEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostJpaEntity> postJpaEntities = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "userJpaEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<CommentJpaEntity> commentJpaEntities = new ArrayList<>();
-
     public void addPost(PostJpaEntity postJpaEntity) {
         postJpaEntities.add(postJpaEntity);
-    }
-
-    public void addComment(CommentJpaEntity commentJpaEntity) {
-        commentJpaEntities.add(commentJpaEntity);
     }
 }
