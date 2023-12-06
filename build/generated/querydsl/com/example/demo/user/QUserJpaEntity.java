@@ -20,8 +20,6 @@ public class QUserJpaEntity extends EntityPathBase<UserJpaEntity> {
 
     public static final QUserJpaEntity userJpaEntity = new QUserJpaEntity("userJpaEntity");
 
-    public final ListPath<com.example.demo.comment.CommentJpaEntity, com.example.demo.comment.QCommentJpaEntity> commentJpaEntities = this.<com.example.demo.comment.CommentJpaEntity, com.example.demo.comment.QCommentJpaEntity>createList("commentJpaEntities", com.example.demo.comment.CommentJpaEntity.class, com.example.demo.comment.QCommentJpaEntity.class, PathInits.DIRECT2);
-
     public final StringPath email = createString("email");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
