@@ -20,31 +20,29 @@ public class QUserJpaEntity extends EntityPathBase&lt;UserJpaEntity&gt; {
 
 <span class="nc" id="L21">    public static final QUserJpaEntity userJpaEntity = new QUserJpaEntity(&quot;userJpaEntity&quot;);</span>
 
-<span class="nc" id="L23">    public final ListPath&lt;com.example.demo.comment.CommentJpaEntity, com.example.demo.comment.QCommentJpaEntity&gt; commentJpaEntities = this.&lt;com.example.demo.comment.CommentJpaEntity, com.example.demo.comment.QCommentJpaEntity&gt;createList(&quot;commentJpaEntities&quot;, com.example.demo.comment.CommentJpaEntity.class, com.example.demo.comment.QCommentJpaEntity.class, PathInits.DIRECT2);</span>
+<span class="nc" id="L23">    public final StringPath email = createString(&quot;email&quot;);</span>
 
-<span class="nc" id="L25">    public final StringPath email = createString(&quot;email&quot;);</span>
+<span class="nc" id="L25">    public final NumberPath&lt;Long&gt; id = createNumber(&quot;id&quot;, Long.class);</span>
 
-<span class="nc" id="L27">    public final NumberPath&lt;Long&gt; id = createNumber(&quot;id&quot;, Long.class);</span>
+<span class="nc" id="L27">    public final StringPath name = createString(&quot;name&quot;);</span>
 
-<span class="nc" id="L29">    public final StringPath name = createString(&quot;name&quot;);</span>
+<span class="nc" id="L29">    public final StringPath nickname = createString(&quot;nickname&quot;);</span>
 
-<span class="nc" id="L31">    public final StringPath nickname = createString(&quot;nickname&quot;);</span>
+<span class="nc" id="L31">    public final StringPath password = createString(&quot;password&quot;);</span>
 
-<span class="nc" id="L33">    public final StringPath password = createString(&quot;password&quot;);</span>
-
-<span class="nc" id="L35">    public final ListPath&lt;com.example.demo.post.PostJpaEntity, com.example.demo.post.QPostJpaEntity&gt; postJpaEntities = this.&lt;com.example.demo.post.PostJpaEntity, com.example.demo.post.QPostJpaEntity&gt;createList(&quot;postJpaEntities&quot;, com.example.demo.post.PostJpaEntity.class, com.example.demo.post.QPostJpaEntity.class, PathInits.DIRECT2);</span>
+<span class="nc" id="L33">    public final ListPath&lt;com.example.demo.post.PostJpaEntity, com.example.demo.post.QPostJpaEntity&gt; postJpaEntities = this.&lt;com.example.demo.post.PostJpaEntity, com.example.demo.post.QPostJpaEntity&gt;createList(&quot;postJpaEntities&quot;, com.example.demo.post.PostJpaEntity.class, com.example.demo.post.QPostJpaEntity.class, PathInits.DIRECT2);</span>
 
     public QUserJpaEntity(String variable) {
-<span class="nc" id="L38">        super(UserJpaEntity.class, forVariable(variable));</span>
-<span class="nc" id="L39">    }</span>
+<span class="nc" id="L36">        super(UserJpaEntity.class, forVariable(variable));</span>
+<span class="nc" id="L37">    }</span>
 
     public QUserJpaEntity(Path&lt;? extends UserJpaEntity&gt; path) {
-<span class="nc" id="L42">        super(path.getType(), path.getMetadata());</span>
-<span class="nc" id="L43">    }</span>
+<span class="nc" id="L40">        super(path.getType(), path.getMetadata());</span>
+<span class="nc" id="L41">    }</span>
 
     public QUserJpaEntity(PathMetadata metadata) {
-<span class="nc" id="L46">        super(UserJpaEntity.class, metadata);</span>
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L44">        super(UserJpaEntity.class, metadata);</span>
+<span class="nc" id="L45">    }</span>
 
 }
 
