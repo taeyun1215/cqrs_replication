@@ -1,6 +1,5 @@
 package com.example.demo.book;
 
-import com.example.demo.post.PostJpaEntity;
 import com.example.demo.review.ReviewJpaEntity;
 import lombok.*;
 
