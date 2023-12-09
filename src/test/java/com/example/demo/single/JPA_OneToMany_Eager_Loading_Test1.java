@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.single;
 
 import com.example.demo.book.BookJpaEntity;
 import com.example.demo.book.BookJpaRepo;

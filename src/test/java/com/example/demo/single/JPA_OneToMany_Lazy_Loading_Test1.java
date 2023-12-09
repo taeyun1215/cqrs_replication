@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.single;
 
 import com.example.demo.post.PostJpaEntity;
 import com.example.demo.post.PostJpaRepo;
