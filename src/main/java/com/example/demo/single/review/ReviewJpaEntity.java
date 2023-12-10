@@ -1,6 +1,6 @@
-package com.example.demo.review;
+package com.example.demo.single.review;
 
-import com.example.demo.book.BookJpaEntity;
+import com.example.demo.single.book.BookJpaEntity;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,4 +1,4 @@
-package com.example.demo.user;
+package com.example.demo.single.user;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,10 +1,11 @@
-package com.example.demo.user;
+package com.example.demo.single.user;
 
-import com.example.demo.post.PostJpaEntity;
+import com.example.demo.single.post.PostJpaEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class UserJpaEntity {
     private String name;
 
     @Builder.Default
-//    @BatchSize(size = 5)
+//    @BatchSize(size = 10)
 //    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "userJpaEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostJpaEntity> postJpaEntities = new ArrayList<>();
