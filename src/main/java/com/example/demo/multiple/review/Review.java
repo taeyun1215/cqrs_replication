@@ -1,6 +1,5 @@
 package com.example.demo.multiple.review;
 
-import com.example.demo.multiple.category.Category;
 import com.example.demo.multiple.customer.Customer;
 import com.example.demo.multiple.product.Product;
 import lombok.AllArgsConstructor;
