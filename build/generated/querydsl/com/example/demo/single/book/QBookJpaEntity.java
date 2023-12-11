@@ -1,4 +1,4 @@
-package com.example.demo.book;
+package com.example.demo.single.book;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QBookJpaEntity extends EntityPathBase<BookJpaEntity> {
 
-    private static final long serialVersionUID = -1372016310L;
+    private static final long serialVersionUID = -18114180L;
 
     public static final QBookJpaEntity bookJpaEntity = new QBookJpaEntity("bookJpaEntity");
 
@@ -24,7 +24,7 @@ public class QBookJpaEntity extends EntityPathBase<BookJpaEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final ListPath<com.example.demo.review.ReviewJpaEntity, com.example.demo.review.QReviewJpaEntity> reviewJpaEntities = this.<com.example.demo.review.ReviewJpaEntity, com.example.demo.review.QReviewJpaEntity>createList("reviewJpaEntities", com.example.demo.review.ReviewJpaEntity.class, com.example.demo.review.QReviewJpaEntity.class, PathInits.DIRECT2);
+    public final ListPath<com.example.demo.single.review.ReviewJpaEntity, com.example.demo.single.review.QReviewJpaEntity> reviewJpaEntities = this.<com.example.demo.single.review.ReviewJpaEntity, com.example.demo.single.review.QReviewJpaEntity>createList("reviewJpaEntities", com.example.demo.single.review.ReviewJpaEntity.class, com.example.demo.single.review.QReviewJpaEntity.class, PathInits.DIRECT2);
 
     public final StringPath title = createString("title");
 

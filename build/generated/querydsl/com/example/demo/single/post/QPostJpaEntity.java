@@ -1,4 +1,4 @@
-package com.example.demo.post;
+package com.example.demo.single.post;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QPostJpaEntity extends EntityPathBase<PostJpaEntity> {
 
-    private static final long serialVersionUID = 310600426L;
+    private static final long serialVersionUID = 1664502556L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
@@ -28,7 +28,7 @@ public class QPostJpaEntity extends EntityPathBase<PostJpaEntity> {
 
     public final StringPath title = createString("title");
 
-    public final com.example.demo.user.QUserJpaEntity userJpaEntity;
+    public final com.example.demo.single.user.QUserJpaEntity userJpaEntity;
 
     public QPostJpaEntity(String variable) {
         this(PostJpaEntity.class, forVariable(variable), INITS);
@@ -48,7 +48,7 @@ public class QPostJpaEntity extends EntityPathBase<PostJpaEntity> {
 
     public QPostJpaEntity(Class<? extends PostJpaEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.userJpaEntity = inits.isInitialized("userJpaEntity") ? new com.example.demo.user.QUserJpaEntity(forProperty("userJpaEntity")) : null;
+        this.userJpaEntity = inits.isInitialized("userJpaEntity") ? new com.example.demo.single.user.QUserJpaEntity(forProperty("userJpaEntity")) : null;
     }
 
 }

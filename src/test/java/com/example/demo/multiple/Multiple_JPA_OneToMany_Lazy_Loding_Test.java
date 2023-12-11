@@ -88,11 +88,9 @@ public class Multiple_JPA_OneToMany_Lazy_Loding_Test {
         for (Product product : products) {
             System.out.println("PRODUCT : " + product.getName());
             System.out.println("CATEGORY : " + product.getCategory().getName());
-            System.out.println("--------------------------------------------\n");
             for (Review review : product.getReviews()) {
                 System.out.println("REVIEW : " + review.getContent());
                 System.out.println("CUSTOMER : " + review.getCustomer().getName());
-                System.out.println("--------------------------------------------\n");
             }
         }
     }

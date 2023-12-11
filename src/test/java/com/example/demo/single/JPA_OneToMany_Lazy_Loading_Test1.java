@@ -1,9 +1,9 @@
 package com.example.demo.single;
 
-import com.example.demo.post.PostJpaEntity;
-import com.example.demo.post.PostJpaRepo;
-import com.example.demo.user.UserJpaEntity;
-import com.example.demo.user.UserJpaRepo;
+import com.example.demo.single.post.PostJpaEntity;
+import com.example.demo.single.post.PostJpaRepo;
+import com.example.demo.single.user.UserJpaEntity;
+import com.example.demo.single.user.UserJpaRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,7 +65,7 @@ public class JPA_OneToMany_Lazy_Loading_Test1 {
 
     @Test
     @DisplayName("Lazy Loading을 사용할 때 발생하는 N+1 문제를 확인합니다.")
-    public void JPA_OneToMany_Lazy_Loading_Test1() {
+    public void test1() {
         em.flush();
         em.clear();
         System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
@@ -81,7 +81,7 @@ public class JPA_OneToMany_Lazy_Loading_Test1 {
 
     @Test
     @DisplayName("Fetch Join을 사용하여 N+1 문제를 해결합니다.")
-    public void JPA_OneToMany_Lazy_Loading_Test2() {
+    public void test2() {
         em.flush();
         em.clear();
         System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
@@ -97,11 +97,15 @@ public class JPA_OneToMany_Lazy_Loading_Test1 {
         System.out.println("------------ USER SIZE 확인 ------------");
         System.out.println("userJpaEntities.size() : " + userJpaEntities.size());
         System.out.println("------------ USER SIZE 확인 완료 [20개가 조회!?, Fetch Join(Inner Join)은 카테시안 곱이 발생하여 POST의 수만큼 USER가 중복이 발생]------------\n");
+
+        for (UserJpaEntity userJpaEntity : userJpaEntities) {
+            System.out.println(userJpaEntity.getId());
+        }
     }
 
     @Test
     @DisplayName("Fetch Join을 사용하여 N+1 문제를 해결합니다. (Distinct)")
-    public void JPA_OneToMany_Lazy_Loading_Test3() {
+    public void test3() {
         em.flush();
         em.clear();
         System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
@@ -121,7 +125,7 @@ public class JPA_OneToMany_Lazy_Loading_Test1 {
 
     @Test
     @DisplayName("EntityGraph를 사용하여 N+1 문제를 해결합니다.")
-    public void JPA_OneToMany_Lazy_Loading_Test4() {
+    public void test4() {
         em.flush();
         em.clear();
         System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");

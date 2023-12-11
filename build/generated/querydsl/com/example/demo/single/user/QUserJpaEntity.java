@@ -1,4 +1,4 @@
-package com.example.demo.user;
+package com.example.demo.single.user;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,7 +16,7 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QUserJpaEntity extends EntityPathBase<UserJpaEntity> {
 
-    private static final long serialVersionUID = -594256886L;
+    private static final long serialVersionUID = 759645244L;
 
     public static final QUserJpaEntity userJpaEntity = new QUserJpaEntity("userJpaEntity");
 
@@ -30,7 +30,7 @@ public class QUserJpaEntity extends EntityPathBase<UserJpaEntity> {
 
     public final StringPath password = createString("password");
 
-    public final ListPath<com.example.demo.post.PostJpaEntity, com.example.demo.post.QPostJpaEntity> postJpaEntities = this.<com.example.demo.post.PostJpaEntity, com.example.demo.post.QPostJpaEntity>createList("postJpaEntities", com.example.demo.post.PostJpaEntity.class, com.example.demo.post.QPostJpaEntity.class, PathInits.DIRECT2);
+    public final ListPath<com.example.demo.single.post.PostJpaEntity, com.example.demo.single.post.QPostJpaEntity> postJpaEntities = this.<com.example.demo.single.post.PostJpaEntity, com.example.demo.single.post.QPostJpaEntity>createList("postJpaEntities", com.example.demo.single.post.PostJpaEntity.class, com.example.demo.single.post.QPostJpaEntity.class, PathInits.DIRECT2);
 
     public QUserJpaEntity(String variable) {
         super(UserJpaEntity.class, forVariable(variable));

@@ -27,7 +27,7 @@ public class UserJpaEntity {
     private String name;
 
     @Builder.Default
-//    @BatchSize(size = 10)
+    @BatchSize(size = 5)
 //    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(mappedBy = "userJpaEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PostJpaEntity> postJpaEntities = new ArrayList<>();

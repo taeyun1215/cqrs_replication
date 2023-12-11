@@ -1,9 +1,9 @@
 package com.example.demo.single;
 
-import com.example.demo.book.BookJpaEntity;
-import com.example.demo.book.BookJpaRepo;
-import com.example.demo.review.ReviewJpaEntity;
-import com.example.demo.review.ReviewJpaRepo;
+import com.example.demo.single.book.BookJpaEntity;
+import com.example.demo.single.book.BookJpaRepo;
+import com.example.demo.single.review.ReviewJpaEntity;
+import com.example.demo.single.review.ReviewJpaRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

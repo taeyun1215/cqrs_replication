@@ -1,4 +1,4 @@
-package com.example.demo.review;
+package com.example.demo.single.review;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -16,13 +16,13 @@ import com.querydsl.core.types.dsl.PathInits;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QReviewJpaEntity extends EntityPathBase<ReviewJpaEntity> {
 
-    private static final long serialVersionUID = -904497046L;
+    private static final long serialVersionUID = 970323868L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QReviewJpaEntity reviewJpaEntity = new QReviewJpaEntity("reviewJpaEntity");
 
-    public final com.example.demo.book.QBookJpaEntity bookJpaEntity;
+    public final com.example.demo.single.book.QBookJpaEntity bookJpaEntity;
 
     public final StringPath content = createString("content");
 
@@ -46,7 +46,7 @@ public class QReviewJpaEntity extends EntityPathBase<ReviewJpaEntity> {
 
     public QReviewJpaEntity(Class<? extends ReviewJpaEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.bookJpaEntity = inits.isInitialized("bookJpaEntity") ? new com.example.demo.book.QBookJpaEntity(forProperty("bookJpaEntity")) : null;
+        this.bookJpaEntity = inits.isInitialized("bookJpaEntity") ? new com.example.demo.single.book.QBookJpaEntity(forProperty("bookJpaEntity")) : null;
     }
 
 }
