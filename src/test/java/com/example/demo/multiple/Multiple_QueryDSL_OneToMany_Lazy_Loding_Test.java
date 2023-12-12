@@ -22,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @Transactional
 @SpringBootTest
 public class Multiple_QueryDSL_OneToMany_Lazy_Loding_Test {
@@ -50,39 +48,39 @@ public class Multiple_QueryDSL_OneToMany_Lazy_Loding_Test {
 
     @BeforeEach
     void setup() {
-        for (int i = 0; i < 2; i++) {
-            Category category = Category.builder()
-                    .name("category_name" + i)
-                    .build();
-            categoryRepo.save(category);
-
-            for (int j = 0; j < 2; j++) {
-                Product product = Product.builder()
-                        .name("product_name" + j)
-                        .price(10.0)
-                        .category(category)
-                        .build();
-                productRepo.save(product);
-
-                for (int k = 0; k < 2; k++) {
-                    Customer customer = Customer.builder()
-                            .name("customer_name" + k)
-                            .email("customer_email" + k)
-                            .build();
-                    customerRepo.save(customer);
-
-                    for (int l = 0; l < 2; l++) {
-                        Review review = Review.builder()
-                                .content("review_content" + l)
-                                .rating(5)
-                                .product(product)
-                                .customer(customer)
-                                .build();
-                        reviewRepo.save(review);
-                    }
-                }
-            }
-        }
+//        for (int i = 0; i < 2; i++) {
+//            Category category = Category.builder()
+//                    .name("category_name" + i)
+//                    .build();
+//            categoryRepo.save(category);
+//
+//            for (int j = 0; j < 2; j++) {
+//                Product product = Product.builder()
+//                        .name("product_name" + j)
+//                        .price(10.0)
+//                        .category(category)
+//                        .build();
+//                productRepo.save(product);
+//
+//                for (int k = 0; k < 2; k++) {
+//                    Customer customer = Customer.builder()
+//                            .name("customer_name" + k)
+//                            .email("customer_email" + k)
+//                            .build();
+//                    customerRepo.save(customer);
+//
+//                    for (int l = 0; l < 2; l++) {
+//                        Review review = Review.builder()
+//                                .content("review_content" + l)
+//                                .rating(5)
+//                                .product(product)
+//                                .customer(customer)
+//                                .build();
+//                        reviewRepo.save(review);
+//                    }
+//                }
+//            }
+//        }
     }
 
     @Test
@@ -117,10 +115,6 @@ public class Multiple_QueryDSL_OneToMany_Lazy_Loding_Test {
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
 
-        QProduct product = QProduct.product;
-        QCategory category = QCategory.category;
-        QReview review = QReview.review;
-
         List<Product> products = queryFactory
                 .selectFrom(product)
                 .leftJoin(product.reviews, review).fetchJoin()
@@ -145,8 +139,6 @@ public class Multiple_QueryDSL_OneToMany_Lazy_Loding_Test {
         System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
 
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QProduct product = QProduct.product;
-        QCategory category = QCategory.category;
 
         queryFactory
                 .select(Projections.fields(ProductDetails1.class,
@@ -177,5 +169,6 @@ public class Multiple_QueryDSL_OneToMany_Lazy_Loding_Test {
                         category.id))
                 .from(product)
                 .fetch();
+
     }
 }
