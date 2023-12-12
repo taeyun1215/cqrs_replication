@@ -94,4 +94,25 @@ public class Multiple_JPA_OneToMany_Lazy_Loding_Test {
             }
         }
     }
+
+    @Test
+    @DisplayName("Lazy Loading을 사용할 때 발생하는 N+1 문제를 해결합니다.")
+    void Multiple_JPA_OneToMany_Lazy_Loading_Test2() {
+        em.flush();
+        em.clear();
+        System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
+
+        System.out.println("--------------PRODUCT 조회--------------");
+        List<Product> products = productRepo.findAllByMultiFetchJoin();
+        System.out.println("--------------PRODUCT 조회 끝---------------\n");
+
+        for (Product product : products) {
+            System.out.println("PRODUCT : " + product.getName());
+            System.out.println("CATEGORY : " + product.getCategory().getName());
+            for (Review review : product.getReviews()) {
+                System.out.println("REVIEW : " + review.getContent());
+                System.out.println("CUSTOMER : " + review.getCustomer().getName());
+            }
+        }
+    }
 }
