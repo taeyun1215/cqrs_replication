@@ -20,6 +20,12 @@ public class QCategory extends EntityPathBase<Category> {
 
     public static final QCategory category = new QCategory("category");
 
+    public final StringPath description1 = createString("description1");
+
+    public final StringPath description2 = createString("description2");
+
+    public final StringPath description3 = createString("description3");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath name = createString("name");
