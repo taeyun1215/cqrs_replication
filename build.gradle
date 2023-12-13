@@ -66,6 +66,12 @@ dependencies {
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
     implementation 'com.amazonaws:aws-lambda-java-events:3.8.0'
 }
+
+test {
+    // 테스트 실행 시 JVM 옵션 설정
+    jvmArgs = ['-Xmx2g'] // 최대 힙 사이즈를 2GB로 설정
+}
+
 tasks.named('test') {
     useJUnitPlatform()
     finalizedBy 'jacocoTestReport'  // 테스트 종료후 항상 리포트 생성
@@ -98,6 +104,7 @@ jacocoTestReport {
         )
     }
 }
+
 jacocoTestCoverageVerification {
     violationRules {
         rule {
