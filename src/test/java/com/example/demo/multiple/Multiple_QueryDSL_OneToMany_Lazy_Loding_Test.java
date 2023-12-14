@@ -9,6 +9,7 @@ import com.example.demo.multiple.review.QReview;
 import com.example.demo.multiple.review.Review;
 import com.example.demo.multiple.review.ReviewRepo;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -188,7 +189,7 @@ public class Multiple_QueryDSL_OneToMany_Lazy_Loding_Test {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QProduct product = QProduct.product;
 
-        int pageNumber = 1; // 페이지 번호 (예: 1)
+        int pageNumber = 100000; // 페이지 번호 (예: 1)
         int pageSize = 20; // 페이지 당 항목 수 (예: 10)
         long offset = (pageNumber - 1) * pageSize; // 페이지 시작 위치 계산
 
@@ -216,7 +217,6 @@ public class Multiple_QueryDSL_OneToMany_Lazy_Loding_Test {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QProduct product = QProduct.product;
 
-
         try (Stream<ProductDetails2> stream = queryFactory
                 .select(Projections.fields(ProductDetails2.class,
                         product.id.as("productId"),
@@ -233,5 +233,74 @@ public class Multiple_QueryDSL_OneToMany_Lazy_Loding_Test {
                 System.out.println(productDetails2.getProductName());
             });
         }
+    }
+
+    @Test
+    @DisplayName("Product 안에 category Id 만 가져오기 with Pagination (No Offset)")
+    public void test7() {
+        em.flush();
+        em.clear();
+        System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+
+        int pageSize = 20; // 페이지 당 항목 수 (예: 20)
+        Long productId = 100000L; // 이전 페이지의 마지막 ID
+
+        List<ProductDetails2> results = queryFactory
+                .select(Projections.fields(ProductDetails2.class,
+                        product.id.as("productId"),
+                        product.name.as(    "productName"),
+                        product.price.as("productPrice"),
+                        product.category.id.as("categoryId")))
+                .from(product)
+                .where(product.price.gt(0), ltProductId(productId)) // No Offset 조건 추가
+                .orderBy(product.id.desc()) // ID 기준 정렬
+                .limit(pageSize)
+                .fetch();
+    }
+
+    private BooleanExpression ltProductId(Long productId) {
+        if (productId == null) {
+            return null; // BooleanExpression 자리에 null이 반환되면 조건문에서 자동으로 제거된다.
+        }
+
+        return product.id.lt(productId);
+    }
+
+    @Test
+    @DisplayName("Product 안에 category Id 만 가져오기 with Covering Index")
+    public void test8() {
+        em.flush();
+        em.clear();
+        System.out.println("------------ 영속성 컨텍스트 비우기 -----------\n");
+
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        QProduct product = QProduct.product;
+
+        int pageNumber = 1; // 페이지 번호
+        int pageSize = 20; // 페이지 당 항목 수
+        long offset = (pageNumber - 1) * pageSize; // 페이지 시작 위치 계산
+
+        // 첫 번째 쿼리: ID만 조회
+        List<Long> productIds = queryFactory
+                .select(product.id)
+                .from(product)
+                .where(product.price.gt(0))
+                .orderBy(product.name.desc())
+                .offset(offset)
+                .limit(pageSize)
+                .fetch();
+
+        // 두 번째 쿼리: 실제 데이터 조회
+        List<ProductDetails2> results = queryFactory
+                .select(Projections.fields(ProductDetails2.class,
+                        product.id.as("productId"),
+                        product.name.as("productName"),
+                        product.price.as("productPrice"),
+                        product.category.id.as("categoryId")))
+                .from(product)
+                .where(product.id.in(productIds))
+                .fetch();
     }
 }
