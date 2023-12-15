@@ -278,7 +278,7 @@ public class Multiple_QueryDSL_OneToMany_Lazy_Loding_Test {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         QProduct product = QProduct.product;
 
-        int pageNumber = 1; // 페이지 번호
+        int pageNumber = 1000000; // 페이지 번호
         int pageSize = 20; // 페이지 당 항목 수
         long offset = (pageNumber - 1) * pageSize; // 페이지 시작 위치 계산
 
@@ -287,13 +287,13 @@ public class Multiple_QueryDSL_OneToMany_Lazy_Loding_Test {
                 .select(product.id)
                 .from(product)
                 .where(product.price.gt(0))
-                .orderBy(product.name.desc())
+                .orderBy(product.id.asc())
                 .offset(offset)
                 .limit(pageSize)
                 .fetch();
 
         // 두 번째 쿼리: 실제 데이터 조회
-        List<ProductDetails2> results = queryFactory
+        queryFactory
                 .select(Projections.fields(ProductDetails2.class,
                         product.id.as("productId"),
                         product.name.as("productName"),
