@@ -25,7 +25,7 @@ public class ProductDummyDataGenerator {
         final String insertProductQuery = "INSERT INTO products (name, price, category_id) VALUES (?, ?, ?)";
         Random random = new Random();
 
-        for (int categoryId = 1; categoryId <= 150000; categoryId++) {
+        for (int categoryId = 1; categoryId <= 100; categoryId++) {
             int createdCategoryId = insertCategory(conn, insertCategoryQuery, "Electronics " + categoryId, random);
             insertProductsForCategory(conn, insertProductQuery, createdCategoryId, random);
         }
