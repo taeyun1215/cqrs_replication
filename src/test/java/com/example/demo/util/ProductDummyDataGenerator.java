@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class ProductDummyDataGenerator {
 
-    private static final String DB_URL = "jdbc:mariadb://localhost:3306/JPA_N+1_ISSUE";
+    private static final String DB_URL = "jdbc:mariadb://localhost:3306/MariaDB_Replication";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "6548";
     private static final String[] PRODUCT_NAMES = {"Product A", "Product B", "Product C"};
