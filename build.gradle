@@ -29,4 +29,7 @@ dependencies {
 
 	// mariadb
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+    // ConfigurationProperties
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
