@@ -2,8 +2,8 @@ package com.example.demo.category;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 
 @Service
 @Transactional
@@ -24,6 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Category getCategory(Long id) {
         return categoryRepo.findById(id).orElseThrow();
     }
